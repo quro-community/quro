@@ -1,0 +1,50 @@
+{
+  "center_id": "C4",
+  "center_uuid": "C4-ce2d9b151581",
+  "archetype": "sink",
+  "size": 284,
+  "entry_points": [
+    "sym::Path",
+    "sym::exists",
+    "sym::info",
+    "sym::_ensure_lds_tools",
+    "sym::open_unix_connection"
+  ],
+  "coupled_centers": ["C0", "C1", "C2", "C5"],
+  "coupling_clusters": ["SC1"],
+  "lineage": {
+    "landscape_version": "2026-06-20",
+    "predecessors": [],
+    "successors": []
+  },
+  "freshness": {
+    "last_full_exploration": "2026-06-20T00:00:00Z",
+    "last_incremental_update": null,
+    "git_hash": "e881846",
+    "symbol_count_at_exploration": 284,
+    "landscape_size_at_exploration": 3354,
+    "topology_check_passed": true,
+    "energy_snapshot": {
+      "sampled_at": "2026-06-20T00:00:00Z",
+      "high_energy_symbols": 0,
+      "stable_attractor_symbols": 0
+    }
+  },
+  "doc_generation": {
+    "total_docs": 5,
+    "docs": [
+      "architecture.md",
+      "dataflow.md",
+      "api.md",
+      "dependencies.md",
+      "entry-points.md"
+    ]
+  },
+  "quro_doc_ids": [
+    "c4-architecture-v1",
+    "c4-dataflow-v1",
+    "c4-api-v1",
+    "c4-dependencies-v1",
+    "c4-entry-points-v1"
+  ]
+}

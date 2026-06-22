@@ -1,0 +1,56 @@
+{
+  "center_id": "C2",
+  "center_uuid": "C2-d03c60e4",
+  "archetype": "fanout",
+  "size": 624,
+  "entry_points": [
+    "sym::select_traversal_mode",
+    "sym::FlowObserver::flow_observer::53",
+    "sym::to_dict::flow_observer::37"
+  ],
+  "coupled_centers": ["C0"],
+  "coupling_clusters": [],
+  "lineage": {
+    "landscape_version": "2026-06-20",
+    "predecessors": [],
+    "successors": []
+  },
+  "freshness": {
+    "last_full_exploration": "2026-06-20T12:00:00Z",
+    "last_incremental_update": null,
+    "git_hash": "8d5ee9b",
+    "symbol_count_at_exploration": 624,
+    "topology_check_passed": true,
+    "energy_snapshot": {
+      "sampled_at": "2026-06-20T12:00:00Z",
+      "high_energy_symbols": 7,
+      "stable_attractor_symbols": 4,
+      "top_attractors": [
+        {"symbol": "sym::CQEPolicy", "role": "EMITTER", "forward_magnitude": 19.69},
+        {"symbol": "sym::CanonicalLayer", "role": "CORE_ATTRACTOR", "forward_magnitude": 15.24},
+        {"symbol": "sym::ReverseTraverser", "role": "CORE_ATTRACTOR", "forward_magnitude": 12.71},
+        {"symbol": "sym::TraversalOrchestrator", "role": "CONVERTER", "forward_magnitude": 12.49},
+        {"symbol": "sym::SaddleEscapeTraverser", "role": "CORE_ATTRACTOR", "forward_magnitude": 10.57},
+        {"symbol": "sym::FieldGuidedTraverser", "role": "CONVERTER", "forward_magnitude": 9.53},
+        {"symbol": "sym::DefaultCQERefiner", "role": "CONVERTER", "forward_magnitude": 8.55}
+      ]
+    }
+  },
+  "doc_generation": {
+    "total_docs": 5,
+    "docs": [
+      {"id": "architecture", "title": "Internal Architecture", "path": "docs/architecture.md", "status": "generated"},
+      {"id": "dataflow", "title": "Data Flow Between Components", "path": "docs/dataflow.md", "status": "generated"},
+      {"id": "api", "title": "API Surface", "path": "docs/api.md", "status": "generated"},
+      {"id": "dependencies", "title": "Dependency Graph", "path": "docs/dependencies.md", "status": "generated"},
+      {"id": "entry-points", "title": "Entry Point Analysis", "path": "docs/entry-points.md", "status": "generated"}
+    ]
+  },
+  "quro_doc_ids": [
+    "C2-architecture-exploration-20260620",
+    "C2-dataflow-exploration-20260620",
+    "C2-api-exploration-20260620",
+    "C2-dependencies-exploration-20260620",
+    "C2-entrypoints-exploration-20260620"
+  ]
+}

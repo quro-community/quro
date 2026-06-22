@@ -1,0 +1,47 @@
+{
+  "center_id": "C8",
+  "center_uuid": "C8-a3b4c5d6",
+  "archetype": "sink",
+  "size": 139,
+  "entry_points": [
+    "sym::MinHashLSH::lsh_engine::28",
+    "sym::MinHashLSH",
+    "sym::to_dict"
+  ],
+  "coupled_centers": ["C0", "C1", "C3"],
+  "coupling_clusters": ["SC70"],
+  "lineage": {
+    "landscape_version": "2026-06-20",
+    "predecessors": [],
+    "successors": []
+  },
+  "freshness": {
+    "last_full_exploration": "2026-06-20T12:00:00Z",
+    "last_incremental_update": null,
+    "git_hash": "8d5ee9b",
+    "symbol_count_at_exploration": 139,
+    "topology_check_passed": true,
+    "energy_snapshot": {
+      "sampled_at": "2026-06-20T12:00:00Z",
+      "high_energy_symbols": 2,
+      "stable_attractor_symbols": 0
+    }
+  },
+  "doc_generation": {
+    "total_docs": 5,
+    "docs": [
+      "architecture.md",
+      "dataflow.md",
+      "api.md",
+      "dependencies.md",
+      "entry-points.md"
+    ]
+  },
+  "quro_doc_ids": [
+    "C8-architecture-001",
+    "C8-dataflow-001",
+    "C8-api-001",
+    "C8-dependencies-001",
+    "C8-entrypoints-001"
+  ]
+}

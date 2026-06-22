@@ -1,0 +1,102 @@
+{
+  "center_id": "C0",
+  "center_uuid": "C0-a1b2c3d4",
+  "archetype": "hub",
+  "size": 919,
+  "entry_points": [
+    "sym::QuroV3Service::service::81",
+    "sym::enrich::types::55",
+    "sym::get_all_nodes::memory::108"
+  ],
+  "coupled_centers": ["C1", "C3", "C4", "C5", "C6", "C7", "C8"],
+  "coupling_clusters": ["SC70"],
+  "lineage": {
+    "landscape_version": "2026-06-20",
+    "predecessors": [],
+    "successors": []
+  },
+  "freshness": {
+    "last_full_exploration": "2026-06-20T12:00:00Z",
+    "last_incremental_update": "2026-06-20T18:30:00Z",
+    "git_hash": "5543a6a",
+    "symbol_count_at_exploration": 919,
+    "topology_check_passed": true,
+    "energy_snapshot": {
+      "sampled_at": "2026-06-20T18:30:00Z",
+      "high_energy_symbols": 4,
+      "stable_attractor_symbols": 0
+    }
+  },
+  "doc_generation": {
+    "total_docs": 5,
+    "docs": [
+      {
+        "id": "architecture.md",
+        "title": "C0 Architecture",
+        "status": "populated",
+        "size_bytes": 3200,
+        "key_findings": [
+          "Layered orchestration: Service → Registry → Orchestrator → Pipeline",
+          "10 orchestrators with orchestration-only invariant",
+          "TDA pipeline: Phase-2 (3+1 passes) → Phase-3 (4 passes) → Phase-3.5",
+          "CQEOrchestrator identified as highest-energy symbol (forward_mag: 43.9)"
+        ]
+      },
+      {
+        "id": "dataflow.md",
+        "title": "C0 Data Flow",
+        "status": "populated",
+        "size_bytes": 4200,
+        "key_findings": [
+          "4 major data flows: scan, CQE query, TDA pipeline, orchestrator sub-flows",
+          "Pipeline state passed via intermediate JSONL files",
+          "Adapter pattern: all I/O delegated to injected adapters",
+          "Cross-center flow map with persistence locations"
+        ]
+      },
+      {
+        "id": "api.md",
+        "title": "C0 API Surface",
+        "status": "populated",
+        "size_bytes": 3800,
+        "key_findings": [
+          "3 entry points (all TRANSIENT, low forward magnitude)",
+          "6 service classes with method signatures",
+          "11 orchestrator classes documented",
+          "Full method signatures for all public symbols"
+        ]
+      },
+      {
+        "id": "dependencies.md",
+        "title": "C0 Dependencies",
+        "status": "populated",
+        "size_bytes": 3000,
+        "key_findings": [
+          "Internal dependency graph fully mapped",
+          "Cross-center coupling scores: C1(674), C8(672), C3(636), C7(633), C5(408), C4(200), C6(159)",
+          "SC70 tight-coupling cluster identified (C0+C1+C3+C7+C8 = 832 symbols)",
+          "Adapter boundary contracts mapped for all 10 orchestrators"
+        ]
+      },
+      {
+        "id": "entry-points.md",
+        "title": "C0 Entry Points",
+        "status": "populated",
+        "size_bytes": 2400,
+        "key_findings": [
+          "QuroV3Service::service::81 is the primary MCP entry (TRANSIENT, fwd:0.54)",
+          "enrich::types::55 is a legacy CLI entry (leaf, fwd:0.0)",
+          "get_all_nodes::memory::108 is a data access entry (TRANSIENT, fwd:0.54)",
+          "True high-energy symbols are internal orchestrators (CQE:43.9, Phantom:29.6)"
+        ]
+      }
+    ]
+  },
+  "quro_doc_ids": [
+    "C0-architecture-init",
+    "C0-dataflow-init",
+    "C0-api-init",
+    "C0-dependencies-init",
+    "C0-entry-points-init"
+  ]
+}

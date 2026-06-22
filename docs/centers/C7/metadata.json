@@ -1,0 +1,55 @@
+{
+  "center_id": "C7",
+  "center_uuid": "C7-a7b8c9d0",
+  "archetype": "chain",
+  "size": 139,
+  "entry_points": [
+    "sym::get_in_neighbors",
+    "sym::get_draft_status::shadow_draft_tools::252",
+    "sym::shutdown::typescript_analyzer::79"
+  ],
+  "coupled_centers": ["C0", "C1", "C3"],
+  "coupling_clusters": ["SC70"],
+  "lineage": {
+    "landscape_version": "2026-06-20",
+    "predecessors": [],
+    "successors": []
+  },
+  "freshness": {
+    "last_full_exploration": "2026-06-20T00:00:00Z",
+    "last_incremental_update": null,
+    "git_hash": "8d5ee9b",
+    "symbol_count_at_exploration": 139,
+    "topology_check_passed": true,
+    "energy_snapshot": {
+      "sampled_at": "2026-06-20T00:00:00Z",
+      "high_energy_symbols": 25,
+      "stable_attractor_symbols": 0,
+      "top_high_energy": [
+        {"symbol": "stop::typescript_probe::118", "forward_magnitude": 29.62, "role": "CONVERTER"},
+        {"symbol": "get::registry::40", "forward_magnitude": 16.38, "role": "CONVERTER"},
+        {"symbol": "commit_reasoning::qra_tools::68", "forward_magnitude": 10.49, "role": "CONVERTER"},
+        {"symbol": "call_graph::call_graph_tools::36", "forward_magnitude": 10.11, "role": "CONVERTER"},
+        {"symbol": "cqe_diagnose::cqe_tools::871", "forward_magnitude": 9.76, "role": "CONVERTER"}
+      ]
+    }
+  },
+  "doc_generation": {
+    "total_docs": 5,
+    "docs": [
+      "architecture.md",
+      "dataflow.md",
+      "api.md",
+      "dependencies.md",
+      "entry-points.md"
+    ]
+  },
+  "quro_doc_ids": [
+    "19deb364-d91f-4c01-911b-156bff45002e",
+    "aaaf8473-805d-4aa5-8099-9f190cf04203",
+    "105f7991-2699-4689-a20f-788adc9c33cd",
+    "4c5d08ed-3e5a-4a77-97fd-1edfd660e447",
+    "a8443592-404b-4ca2-bc19-34c7c6b29a79",
+    "abd31120-5f9b-4241-954f-c8c70077fad4"
+  ]
+}

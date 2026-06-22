@@ -1,0 +1,57 @@
+{
+  "center_id": "C5",
+  "center_uuid": "C5-c5f3a1b2",
+  "archetype": "hub",
+  "size": 187,
+  "entry_points": [
+    "sym::MorphismInsertRequest::types::132",
+    "sym::TrustWeights::types::48",
+    "sym::PathGrammarPolicy::policy::141"
+  ],
+  "coupled_centers": ["C0", "C1", "C3", "C4"],
+  "coupling_clusters": ["SC480"],
+  "lineage": {
+    "landscape_version": "2026-06-20",
+    "predecessors": [],
+    "successors": []
+  },
+  "freshness": {
+    "last_full_exploration": "2026-06-20T12:00:00Z",
+    "last_incremental_update": null,
+    "git_hash": "8d5ee9b",
+    "symbol_count_at_exploration": 187,
+    "topology_check_passed": true,
+    "energy_snapshot": {
+      "sampled_at": "2026-06-20T12:00:00Z",
+      "high_energy_symbols": 7,
+      "stable_attractor_symbols": 0,
+      "high_energy_list": [
+        "NormalizePolicy::policy::106",
+        "CQEPolicy::policy::177",
+        "TrajectoryRequest::trajectory_planner::61",
+        "TrustWeights::types::48",
+        "MorphismInsertRequest::types::132",
+        "TrustComputeRequest::types::82",
+        "ShadowWriteRequest::types::54"
+      ]
+    }
+  },
+  "doc_generation": {
+    "total_docs": 5,
+    "docs": [
+      "architecture.md",
+      "dataflow.md",
+      "api.md",
+      "dependencies.md",
+      "entry-points.md"
+    ]
+  },
+  "quro_doc_ids": [
+    "6deabea6-2aed-4ad7-b744-b032e3c89e07",
+    "824b842f-7ef3-4aad-a304-9fc8cef46a89",
+    "6e79fd7b-1b09-44ae-9231-c83fd23631fb",
+    "13bfe71d-1cd4-4a89-80fb-a7fb78d31460",
+    "358db2af-a887-4d41-8ef1-4b2e5ebbeaf1",
+    "f2d40572-dd6b-42d0-b905-4fb8f1e4c19c"
+  ]
+}

@@ -1,0 +1,71 @@
+# Quro Scanner Ignore File
+# Syntax: gitignore-compatible glob patterns
+
+# Claude worktrees (temporary git worktrees)
+.claude/worktrees/**
+
+# Legacy node_server (deprecated)
+node_server/**
+
+# Git internals
+.git/**
+
+# Python cache
+__pycache__/**
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/**
+venv/**
+env/**
+
+# Node.js
+node_modules/**
+
+# Build artifacts
+dist/**
+build/**
+*.egg-info/**
+
+# IDE
+.vscode/**
+.idea/**
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+.qurofs_*
+
+# TypeScript (not implemented in scanner - symbol extraction gap)
+**/*.ts
+**/*.tsx
+**/*.mts
+**/*.cts
+
+# QuRo internal context (generated artifacts, not source code)
+.quro_context/**
+
+# Skip all tests
+**/tests/**
+
+# Skip examples
+**/examples/**
+
+## COULD NOT BE SCANNED / EXPLAINED THINGS.
+quro_lds/__main__.py
+quro_ftp/core/packet.py
+quro_bundle/**
+
+## CodeGraph
+.codegraph

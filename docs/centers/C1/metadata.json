@@ -1,0 +1,60 @@
+{
+  "center_id": "C1",
+  "center_uuid": "C1-f9e2a8b1",
+  "archetype": "fanout",
+  "size": 670,
+  "entry_points": [
+    "sym::ManifoldStatesGraphAdapter",
+    "sym::sqlite_graph",
+    "sym::figure"
+  ],
+  "coupled_centers": ["C0", "C3", "C4", "C5", "C6", "C7", "C8"],
+  "coupling_clusters": ["SC70"],
+  "lineage": {
+    "landscape_version": "2026-06-20",
+    "predecessors": [],
+    "successors": []
+  },
+  "freshness": {
+    "last_full_exploration": "2026-06-20T22:00:00Z",
+    "last_incremental_update": "2026-06-20T23:15:00Z",
+    "git_hash": "5543a6a",
+    "symbol_count_at_exploration": 666,
+    "topology_check_passed": true,
+    "energy_snapshot": {
+      "sampled_at": "2026-06-20T23:15:00Z",
+      "high_energy_symbols": 5,
+      "stable_attractor_symbols": 1,
+      "top_attractors": [
+        {"symbol": "sym::GraphInterface", "role": "EMITTER", "forward_magnitude": 68.31},
+        {"symbol": "sym::GraphAdapter::tda_adapters", "role": "CONVERTER", "forward_magnitude": 46.24},
+        {"symbol": "sym::SubgraphView", "role": "TRANSIENT", "forward_magnitude": 29.02},
+        {"symbol": "sym::FileGraphAdapter", "role": "CONVERTER", "forward_magnitude": 24.13},
+        {"symbol": "sym::ManifoldAdapter", "role": "EMITTER", "forward_magnitude": 23.92}
+      ],
+      "core_attractors": [
+        {"symbol": "sym::SQLiteIndexLoader", "role": "CORE_ATTRACTOR", "forward_magnitude": 12.40}
+      ],
+      "new_emitters": [
+        {"symbol": "sym::DuckDBPhase1Processor", "role": "EMITTER", "forward_magnitude": 11.21}
+      ]
+    }
+  },
+  "doc_generation": {
+    "total_docs": 5,
+    "docs": [
+      {"id": "architecture", "path": "docs/architecture.md", "title": "Architecture", "status": "generated", "generated_at": "2026-06-20T22:00:00Z"},
+      {"id": "dataflow", "path": "docs/dataflow.md", "title": "Data Flow", "status": "generated", "generated_at": "2026-06-20T22:00:00Z"},
+      {"id": "api", "path": "docs/api.md", "title": "API Surface", "status": "generated", "generated_at": "2026-06-20T22:00:00Z"},
+      {"id": "dependencies", "path": "docs/dependencies.md", "title": "Dependencies", "status": "generated", "generated_at": "2026-06-20T22:00:00Z"},
+      {"id": "entry-points", "path": "docs/entry-points.md", "title": "Entry Points", "status": "generated", "generated_at": "2026-06-20T22:00:00Z"}
+    ]
+  },
+  "quro_doc_ids": [
+    {"doc_id": "9a8aecb4-ac79-42b1-b7da-379533ec2c88", "title": "C1 Architecture", "file": "docs/architecture.md"},
+    {"doc_id": "55942f02-2653-49a0-8d64-4bfa26fd8499", "title": "C1 Data Flow", "file": "docs/dataflow.md"},
+    {"doc_id": "1a98f035-bca9-4e60-93c0-c758caeb42d2", "title": "C1 API Surface", "file": "docs/api.md"},
+    {"doc_id": "f891717e-99b0-41ae-9a49-a21892f5a8dc", "title": "C1 Dependencies", "file": "docs/dependencies.md"},
+    {"doc_id": "b56b2091-912b-48a8-ad70-54d51f7bae95", "title": "C1 Entry Points", "file": "docs/entry-points.md"}
+  ]
+}

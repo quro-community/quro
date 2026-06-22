@@ -1,0 +1,83 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "quro"
+version = "0.1.0"
+description = "Quro - Categorical Knowledge System with CQE"
+requires-python = ">=3.11"
+dependencies = [
+    "click>=8.1.0",
+    "duckdb>=0.10.0",
+    "mcp>=1.0.0",
+    "asyncpg>=0.29.0",
+    "datasketch>=1.6.0",
+    "httpx>=0.27.0",
+    "networkx>=3.0",
+    "numpy>=1.24.0",
+    "scikit-learn>=1.3.0",
+    "structlog>=23.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "pytest-cov>=4.1.0",
+    "black>=24.0.0",
+    "mypy>=1.8.0",
+    "ruff>=0.2.0",
+]
+
+[project.scripts]
+quro = "cli.main:main"
+
+[tool.setuptools]
+include-package-data = true
+
+# Docs ship as package-data of the 'docs' Python package (see docs/__init__.py).
+# In editable installs, docs_root() resolves to the repo's own docs/ directory.
+# In wheel installs, docs land at <site-packages>/docs/ alongside other packages.
+[tool.setuptools.package-data]
+"docs" = [
+    "**/*.md",
+    "**/*.json",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["*"]
+exclude = [
+    "*.venv", ".venv", "venv",
+    "deprecated",
+    "__pycache__", "*.pyc",
+    ".quro*",
+    "tests",
+    "plans",
+    "migrations",
+    ".agents",
+    ".cache",
+    ".codegraph",
+    ".kiro",
+    ".opencode",
+    ".ruff_cache",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".git",
+    "build",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true

@@ -1,0 +1,49 @@
+{
+  "center_id": "C6",
+  "center_uuid": "C6-7f2d4e9b",
+  "archetype": "chain",
+  "size": 176,
+  "entry_strategy": "sequential",
+  "entry_points": [
+    "sym::SymbolInfo",
+    "sym::validate::input_gates::49",
+    "sym::StructuralTags"
+  ],
+  "coupled_centers": {
+    "C0": 159.034,
+    "C1": 147.455,
+    "C3": 136.727,
+    "C4": 40.282
+  },
+  "coupling_clusters": ["SC1158"],
+  "freshness": {
+    "git_hash": "8d5ee9b",
+    "last_exploration": "2026-06-20T00:00:00Z",
+    "symbol_count_at_exploration": 176,
+    "landscape_hash": ""
+  },
+  "doc_generation": {
+    "total_docs": 5,
+    "docs": [
+      "architecture.md",
+      "dataflow.md",
+      "api.md",
+      "dependencies.md",
+      "entry-points.md"
+    ],
+    "coverage_pct": 100,
+    "generated_at": "2026-06-20T00:00:00Z"
+  },
+  "energy_snapshot": {
+    "top_symbols": {
+      "sym::SymbolInfo": {"role": "CONVERTER", "forward_magnitude": 9.8825, "backward_tension": 0.273, "in_degree": 20, "out_degree": 17},
+      "sym::GateResult": {"role": "CONVERTER", "forward_magnitude": 7.5552, "backward_tension": 0.616, "in_degree": 32, "out_degree": 13},
+      "sym::StructuralTags": {"role": "CONVERTER", "forward_magnitude": 5.3639, "backward_tension": 0.292, "in_degree": 12, "out_degree": 9},
+      "sym::CQEPolicy::policy::177": {"role": "EMITTER", "forward_magnitude": 5.1749, "backward_tension": 0.075, "in_degree": 4, "out_degree": 13},
+      "sym::TypeBoundary": {"role": "CONVERTER", "forward_magnitude": 3.1339, "backward_tension": 0.433, "in_degree": 8, "out_degree": 9}
+    },
+    "total_attractors": 0,
+    "total_repellers": 0,
+    "total_saddle_points": 0
+  }
+}

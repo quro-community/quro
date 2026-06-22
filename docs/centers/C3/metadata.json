@@ -1,0 +1,47 @@
+{
+  "center_id": "C3",
+  "center_uuid": "C3-e5f7a2b9",
+  "archetype": "hub",
+  "size": 290,
+  "entry_strategy": "top-down",
+  "coupled_centers": ["C0", "C1", "C2", "C4", "C5", "C6", "C7", "C8", "C9"],
+  "coupling_clusters": ["SC38"],
+  "entry_points": [
+    "sym::classify_node_role::upstream_navigator::325",
+    "sym::SemanticCQERefiner::refiner::128",
+    "sym::GateResult::types::13",
+    "sym::call_tool",
+    "sym::scan_workspace"
+  ],
+  "freshness": {
+    "last_exploration": "2026-06-20T14:57:14Z",
+    "last_index_exploration": "2026-06-20T14:57:14Z",
+    "last_classify_exploration": "2026-06-20T10:00:00Z",
+    "git_hash": "5543a6a",
+    "symbol_count_at_exploration": 290,
+    "landscape_size_at_exploration": 3354
+  },
+  "doc_generation": {
+    "total_docs": 5,
+    "docs": ["architecture.md", "dataflow.md", "api.md", "dependencies.md", "entry-points.md"],
+    "coverage": 0.85,
+    "last_generated": "2026-06-20T14:57:14Z"
+  },
+  "energy_snapshot": {
+    "top_converters": [
+      {"symbol": "RegistryAdapter", "forward_magnitude": 53.98, "tension": 0.08},
+      {"symbol": "MemoryRegistryAdapter", "forward_magnitude": 34.27, "tension": 0.44},
+      {"symbol": "SQLiteGraphAdapter", "forward_magnitude": 18.04, "tension": 0.45},
+      {"symbol": "CQEGraphAdapter", "forward_magnitude": 17.79, "tension": 0.44},
+      {"symbol": "DatabaseManager", "forward_magnitude": 15.19, "tension": 0.31},
+      {"symbol": "SQLiteRegistryAdapter", "forward_magnitude": 5.17, "tension": 0.53}
+    ],
+    "top_emitters": [
+      {"symbol": "ShadowAdapter", "forward_magnitude": 20.75, "tension": 0.08},
+      {"symbol": "DuckDBGraphAdapter", "forward_magnitude": 16.24, "tension": 0.29},
+      {"symbol": "SkeletonAdapter", "forward_magnitude": 15.97, "tension": 0.08},
+      {"symbol": "ScannerAdapter", "forward_magnitude": 13.45, "tension": 0.08},
+      {"symbol": "MemoryAdapter", "forward_magnitude": 11.55, "tension": 0.08}
+    ]
+  }
+}

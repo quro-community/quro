@@ -1,0 +1,29 @@
+# Quro CLI - Python Requirements
+
+# Core dependencies
+click>=8.1.0              # CLI framework
+asyncpg>=0.29.0           # PostgreSQL async driver
+datasketch>=1.6.0         # MinHash LSH implementation
+
+# MCP SDK
+mcp>=0.9.0                # Model Context Protocol SDK
+
+# Code analysis
+tree-sitter>=0.21.0       # Fallback AST parser
+tree-sitter-typescript>=0.21.0  # TypeScript grammar
+
+# Git integration
+GitPython>=3.1.0          # Git operations
+
+# HTTP client (for Ollama)
+httpx>=0.27.0             # Async HTTP client
+
+# Testing
+pytest>=8.0.0             # Test framework
+pytest-asyncio>=0.23.0    # Async test support
+pytest-cov>=4.1.0         # Coverage reporting
+
+# Development
+black>=24.0.0             # Code formatter
+mypy>=1.8.0               # Type checker
+ruff>=0.2.0               # Fast linter
