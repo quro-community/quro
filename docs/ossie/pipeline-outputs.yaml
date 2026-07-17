@@ -1,210 +1,360 @@
 semantic_model:
   - name: pipeline_outputs
-    description: "Serialized TDA and CQE pipeline outputs — JSON and JSONL artifacts from each phase"
+    description: "Serialized TDA pipeline outputs — 9 JSON/JSONL artifacts across phases 2, 2.5, 3.5"
     ai_context:
       instructions: >
-        Quro's TDA and CQE pipelines produce intermediate and final outputs as JSON/JSONL
-        files. Each file corresponds to a pipeline phase and captures a specific view of
-        the semantic topology: manifold projections, field vectors, edge adjustments,
-        graph metrics, discovered centers, codebase holograms, reflection history, and
-        MI score snapshots. These files reside under the project's .quro/ directory.
+        Quro's TDA pipeline produces 9 intermediate and final artifact files under .quro_context/tda/.
+        Phase 2 produces manifold state projections. Phase 2.5 produces anisotropic fields, edge weights,
+        structural metrics, attractor-biased energy, offline energy, and symbol heat. Phase 3.5 produces
+        semantic centers and codebase hologram. Additionally, 3 pickle cache files (adjacency, field_data,
+        incoming_edges) speed up repeated pipeline runs. Note: cqe_reflections.jsonl and tda_mi_scores.json
+        cited in README do NOT exist in the current data.
     datasets:
       - name: manifold_states
-        source: "file://tda/phase2/manifold_states.jsonl (JSONL)"
-        primary_key: [symbol_id]
-        description: "Manifold state projections per symbol from TDA Phase 2"
+        source: "file://.quro_context/tda/phase2/manifold_states.jsonl (JSONL, 2.8MB, 3354 rows)"
+        primary_key: [symbol]
+        description: "Manifold state projections — per-symbol 5D embedding, topology, stability, and TDA role"
         fields:
-          - name: symbol_id
+          - name: symbol
             expression:
-              dialects: [{dialect: ANSI_SQL, expression: symbol_id}]
+              dialects: [{dialect: ANSI_SQL, expression: symbol}]
             description: "Symbol identifier"
-          - name: manifold_coords
+          - name: manifold_position
             expression:
-              dialects: [{dialect: ANSI_SQL, expression: manifold_coords}]
-            description: "Manifold coordinate vector (JSON array of floats)"
-          - name: phase
+              dialects: [{dialect: ANSI_SQL, expression: manifold_position}]
+            description: "Dict with embedding (float[5]) and norm"
+          - name: topology
             expression:
-              dialects: [{dialect: ANSI_SQL, expression: phase}]
-            description: "Pipeline phase: phase2"
-          - name: timestamp
+              dialects: [{dialect: ANSI_SQL, expression: topology}]
+            description: "Dict: centrality, betweenness, clustering_coeff"
+          - name: stability
             expression:
-              dialects: [{dialect: ANSI_SQL, expression: timestamp}]
-            description: "Computation timestamp (epoch ms)"
+              dialects: [{dialect: ANSI_SQL, expression: stability}]
+            description: "Dict: tau_persistence, entry_variance, structural_noise"
+          - name: role_type
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: role_type}]
+            description: "TDA role: hub, leaf, sink, bridge"
+          - name: role_confidence
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: role_confidence}]
+            description: "Confidence score for role classification [0, 1]"
+          - name: temporal_signature
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: temporal_signature}]
+            description: "Dict: first_seen (epoch ms), frequency, burstiness"
+          - name: field_role
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: field_role}]
+            description: "Field role: not_critical_point, attractor, repeller, saddle"
+          - name: field_magnitude
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: field_magnitude}]
+            description: "Field magnitude"
+          - name: mass
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: mass}]
+            description: "Cognitive mass"
+          - name: friction
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: friction}]
+            description: "Traversal friction"
       - name: anisotropic_fields
-        source: "file://tda/phase2_5/anisotropic_fields.jsonl (JSONL)"
+        source: "file://.quro_context/tda/phase2_5/anisotropic_fields.jsonl (JSONL, 889KB, 3354 rows)"
+        primary_key: [symbol]
+        description: "Directional field vectors per symbol — forward direction, magnitudes, source diversity"
+        fields:
+          - name: symbol
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: symbol}]
+            description: "Symbol identifier"
+          - name: forward_direction
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: forward_direction}]
+            description: "3D forward direction vector (float[3])"
+          - name: forward_magnitude
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: forward_magnitude}]
+            description: "Forward energy magnitude"
+          - name: backward_tension
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: backward_tension}]
+            description: "Backward tension — upstream navigation resistance"
+          - name: source_diversity
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: source_diversity}]
+            description: "Shannon entropy of upstream callers [0, 1]"
+          - name: in_degree
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: in_degree}]
+            description: "Number of incoming edges"
+          - name: out_degree
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: out_degree}]
+            description: "Number of outgoing edges"
+          - name: field_type
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: field_type}]
+            description: "Field type: anisotropic (currently the only type)"
+      - name: edge_weights
+        source: "file://.quro_context/tda/phase2_5/edge_weights.json (JSON, 3MB, 13445 edges)"
+        primary_key: [edge_key]
+        description: "TDA-adjusted edge weights — keyed by src→dst, with type and dissipation"
+        fields:
+          - name: edge_key
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: edge_key}]
+            description: "Composite key: src→dst (e.g., cat::entry_point→sym::main)"
+          - name: src
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: src}]
+            description: "Source symbol ID"
+          - name: dst
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: dst}]
+            description: "Destination symbol ID"
+          - name: edge_type
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: edge_type}]
+            description: "Edge type: dependency, composition"
+          - name: weight
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: weight}]
+            description: "Edge weight (0.5 default)"
+          - name: dissipation
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: dissipation}]
+            description: "Energy dissipation factor (0.4 default)"
+      - name: structural_metrics
+        source: "file://.quro_context/tda/phase2_5/structural_metrics.json (JSON, 643KB, 3015 symbols)"
         primary_key: [symbol_id]
-        description: "Directional field vectors per symbol from TDA Phase 2.5"
+        description: "Per-symbol structural graph metrics — degree, gravity, mass, complexity, friction"
         fields:
           - name: symbol_id
             expression:
               dialects: [{dialect: ANSI_SQL, expression: symbol_id}]
             description: "Symbol identifier"
-          - name: field_vector
+          - name: in_degree
             expression:
-              dialects: [{dialect: ANSI_SQL, expression: field_vector}]
-            description: "Anisotropic field vector (JSON array of floats)"
-          - name: field_strength
+              dialects: [{dialect: ANSI_SQL, expression: in_degree}]
+            description: "Incoming edge count"
+          - name: out_degree
             expression:
-              dialects: [{dialect: ANSI_SQL, expression: field_strength}]
-            description: "Magnitude of the field vector"
-          - name: classification
+              dialects: [{dialect: ANSI_SQL, expression: out_degree}]
+            description: "Outgoing edge count"
+          - name: gravity_score
             expression:
-              dialects: [{dialect: ANSI_SQL, expression: classification}]
-            description: "Field classification: attractor, repeller, saddle, drift"
-      - name: edge_weights
-        source: "file://tda/phase2_5/edge_weights.json (JSON)"
-        primary_key: [edge_id]
-        description: "TDA-adjusted edge weights from Phase 2.5"
+              dialects: [{dialect: ANSI_SQL, expression: gravity_score}]
+            description: "Gravity score combining in/out-degree"
+          - name: mass
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: mass}]
+            description: "Normalized cognitive mass"
+          - name: complexity
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: complexity}]
+            description: "Cyclomatic complexity (always 1 in current data)"
+          - name: nesting_depth
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: nesting_depth}]
+            description: "Nesting depth (always 1 in current data)"
+          - name: friction
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: friction}]
+            description: "Traversal friction coefficient"
+      - name: attractor_biased_energy
+        source: "file://.quro_context/tda/phase2_5/attractor_biased_energy.json (JSON, 1.2MB, 3354 symbols)"
+        primary_key: [symbol]
+        description: "Attractor-biased energy states — Design 90/94 with bias injection and basin classification"
         fields:
-          - name: src_id
+          - name: symbol
             expression:
-              dialects: [{dialect: ANSI_SQL, expression: src_id}]
-            description: "Source symbol ID"
-          - name: dst_id
+              dialects: [{dialect: ANSI_SQL, expression: symbol}]
+            description: "Symbol identifier"
+          - name: original_total
             expression:
-              dialects: [{dialect: ANSI_SQL, expression: dst_id}]
-            description: "Destination symbol ID"
-          - name: original_weight
+              dialects: [{dialect: ANSI_SQL, expression: original_total}]
+            description: "Original total energy before bias"
+          - name: attractor_bias
             expression:
-              dialects: [{dialect: ANSI_SQL, expression: original_weight}]
-            description: "Original MI-based edge weight"
-          - name: tda_adjusted_weight
+              dialects: [{dialect: ANSI_SQL, expression: attractor_bias}]
+            description: "Bias adjustment applied (0 if not a candidate)"
+          - name: adjusted_total
             expression:
-              dialects: [{dialect: ANSI_SQL, expression: tda_adjusted_weight}]
-            description: "TDA-adjusted edge weight after curvature correction"
-          - name: curvature_correction
+              dialects: [{dialect: ANSI_SQL, expression: adjusted_total}]
+            description: "Total energy after bias adjustment"
+          - name: is_attractor_candidate
             expression:
-              dialects: [{dialect: ANSI_SQL, expression: curvature_correction}]
-            description: "Correction factor applied"
-      - name: structural_metrics
-        source: "file://tda/phase2_5/structural_metrics.json (JSON)"
-        primary_key: [metric_name]
-        description: "Global structural graph metrics from TDA Phase 2.5"
+              dialects: [{dialect: ANSI_SQL, expression: is_attractor_candidate}]
+            description: "Whether symbol meets attractor criteria"
+          - name: bias_reason
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: bias_reason}]
+            description: "Reason for bias: none, terminal_tag, utility_tag, basin_prize"
+          - name: is_basin
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: is_basin}]
+            description: "Whether symbol is in an energy basin"
+      - name: offline_energy
+        source: "file://.quro_context/tda/phase2_5/offline_energy.json (JSON, 1.3MB, 3354 symbols)"
+        primary_key: [symbol]
+        description: "Physics-based energy model — Design 85 field recalibration with potential, gravity, entropy"
         fields:
-          - name: metric_name
+          - name: symbol
             expression:
-              dialects: [{dialect: ANSI_SQL, expression: metric_name}]
-            description: "Metric identifier: avg_energy, hub_ratio, coupling_density, etc."
-          - name: metric_value
+              dialects: [{dialect: ANSI_SQL, expression: symbol}]
+            description: "Symbol identifier"
+          - name: potential
             expression:
-              dialects: [{dialect: ANSI_SQL, expression: metric_value}]
-            description: "Numeric value of the metric"
-          - name: description
+              dialects: [{dialect: ANSI_SQL, expression: potential}]
+            description: "Potential energy component"
+          - name: structural_gravity
             expression:
-              dialects: [{dialect: ANSI_SQL, expression: description}]
-            description: "Human-readable description of the metric"
+              dialects: [{dialect: ANSI_SQL, expression: structural_gravity}]
+            description: "Structural gravity (degree-based)"
+          - name: entropy_bonus
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: entropy_bonus}]
+            description: "Entropy bonus from source diversity"
+          - name: total
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: total}]
+            description: "Total energy (potential + gravity + entropy)"
+          - name: friction
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: friction}]
+            description: "Friction coefficient"
+          - name: mass
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: mass}]
+            description: "Cognitive mass"
+          - name: field_magnitude
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: field_magnitude}]
+            description: "Field vector magnitude"
+          - name: field_direction
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: field_direction}]
+            description: "3D field direction vector"
+          - name: field_role
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: field_role}]
+            description: "Field role: not_critical_point, attractor, repeller, saddle"
+      - name: symbol_heat
+        source: "file://.quro_context/tda/phase2_5/symbol_heat.json (JSON, 691KB, 3015 symbols)"
+        primary_key: [symbol_id]
+        description: "Symbol heat scores from git log analysis (30-day window, 6 commits analyzed)"
+        fields:
+          - name: symbol_id
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: symbol_id}]
+            description: "Symbol identifier"
+          - name: file_path
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: file_path}]
+            description: "Source file path"
+          - name: commits_30d
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: commits_30d}]
+            description: "Number of commits touching this symbol in last 30 days"
+          - name: lines_changed_30d
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: lines_changed_30d}]
+            description: "Lines changed in last 30 days"
+          - name: authors
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: authors}]
+            description: "Number of distinct authors"
+          - name: heat_score
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: heat_score}]
+            description: "Composite heat score [0, 1]"
       - name: semantic_centers
-        source: "file://tda/phase3_5/semantic_centers.json (JSON)"
-        primary_key: [center_id]
+        source: "file://.quro_context/tda/phase3_5/semantic_centers.json (JSON, 181KB, 10 centers C0-C9)"
+        primary_key: [id]
         description: "Automatically discovered semantic centers from TDA Phase 3.5 partitioning"
         fields:
-          - name: center_id
+          - name: id
             expression:
-              dialects: [{dialect: ANSI_SQL, expression: center_id}]
+              dialects: [{dialect: ANSI_SQL, expression: id}]
             description: "Center identifier (C0–C9)"
-          - name: archetype
+          - name: size
             expression:
-              dialects: [{dialect: ANSI_SQL, expression: archetype}]
-            description: "Center archetype: hub, fanout, sink, chain"
-          - name: symbol_count
-            expression:
-              dialects: [{dialect: ANSI_SQL, expression: symbol_count}]
+              dialects: [{dialect: ANSI_SQL, expression: size}]
             description: "Number of symbols in this center"
-          - name: member_symbols
+          - name: structure
             expression:
-              dialects: [{dialect: ANSI_SQL, expression: member_symbols}]
-            description: "List of symbol IDs in this center (JSON array)"
-          - name: entry_points
+              dialects: [{dialect: ANSI_SQL, expression: structure}]
+            description: "Dict: fan_in, fan_out, depth, cohesion"
+          - name: topology
             expression:
-              dialects: [{dialect: ANSI_SQL, expression: entry_points}]
-            description: "Recommended entry point symbol IDs (JSON array)"
+              dialects: [{dialect: ANSI_SQL, expression: topology}]
+            description: "Topology metadata dict"
+          - name: stable_id
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: stable_id}]
+            description: "Stable content hash for change detection"
+          - name: members_hash
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: members_hash}]
+            description: "SHA-256 hash of member symbols"
+          - name: structural_cluster_id
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: structural_cluster_id}]
+            description: "Structural coupling cluster ID (e.g., SC38, SC40)"
+          - name: coupling_archetype
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: coupling_archetype}]
+            description: "Coupling type: tight_coupling"
       - name: codebase_hologram
-        source: "file://tda/phase3_5/codebase_hologram.json (JSON)"
+        source: "file://.quro_context/tda/phase3_5/codebase_hologram.json (JSON, 1.8KB)"
         primary_key: [model_id]
-        description: "Global codebase structure hologram — condensed topological signature of the entire codebase"
+        description: "Global codebase structure hologram — condensed topological signature with field maps and navigation guidance"
         fields:
-          - name: model_id
+          - name: global_metrics
             expression:
-              dialects: [{dialect: ANSI_SQL, expression: model_id}]
-            description: "Hologram model identifier"
-          - name: betti_numbers
+              dialects: [{dialect: ANSI_SQL, expression: global_metrics}]
+            description: "Dict: center_of_mass, dominant_axis, coherence, fragmentation, coupling_pressure"
+          - name: field_maps
             expression:
-              dialects: [{dialect: ANSI_SQL, expression: betti_numbers}]
-            description: "Persistent homology Betti numbers (JSON array)"
-          - name: cluster_tree
+              dialects: [{dialect: ANSI_SQL, expression: field_maps}]
+            description: "Dict: density, curvature, stress per functional area"
+          - name: architecture_state
             expression:
-              dialects: [{dialect: ANSI_SQL, expression: cluster_tree}]
-            description: "Hierarchical cluster tree (JSON)"
-          - name: global_energy
+              dialects: [{dialect: ANSI_SQL, expression: architecture_state}]
+            description: "Dict: coherence, fragmentation, coupling_pressure, overall_health"
+          - name: navigation_guidance
             expression:
-              dialects: [{dialect: ANSI_SQL, expression: global_energy}]
-            description: "Total global energy of the codebase graph"
-          - name: central_hub_id
-            expression:
-              dialects: [{dialect: ANSI_SQL, expression: central_hub_id}]
-            description: "Identifier of the most central hub symbol"
-      - name: cqe_reflections
-        source: "file://cqe_reflections.jsonl (JSONL)"
-        primary_key: [reflection_id]
-        description: "CQE query reflection history — records of query behavior for MI score adjustment"
+              dialects: [{dialect: ANSI_SQL, expression: navigation_guidance}]
+            description: "Dict: recommended_entry_points, high_risk_zones, safe_refactor_zones"
+      - name: pickle_caches
+        source: "file://.quro_context/*.pkl (Pickle)"
+        primary_key: [cache_name]
+        description: "Binary pickle caches for pipeline performance — adjacency_cache.pkl (617KB), field_data_cache.pkl (332KB), incoming_edges_cache.pkl (331MB)"
         fields:
-          - name: reflection_id
+          - name: cache_name
             expression:
-              dialects: [{dialect: ANSI_SQL, expression: reflection_id}]
-            description: "Reflection record identifier"
-          - name: query_symbol
+              dialects: [{dialect: ANSI_SQL, expression: cache_name}]
+            description: "Cache file name"
+          - name: content
             expression:
-              dialects: [{dialect: ANSI_SQL, expression: query_symbol}]
-            description: "Symbol that was queried"
-          - name: intent
-            expression:
-              dialects: [{dialect: ANSI_SQL, expression: intent}]
-            description: "Query intent tag"
-          - name: path_taken
-            expression:
-              dialects: [{dialect: ANSI_SQL, expression: path_taken}]
-            description: "Sequence of symbols visited during the query (JSON array)"
-          - name: success
-            expression:
-              dialects: [{dialect: ANSI_SQL, expression: success}]
-            description: "Whether the query reached its goal"
-          - name: mi_adjustment
-            expression:
-              dialects: [{dialect: ANSI_SQL, expression: mi_adjustment}]
-            description: "MI score adjustment applied as a result of this reflection"
-      - name: tda_mi_scores
-        source: "file://tda_mi_scores.json (JSON)"
-        primary_key: [symbol_pair]
-        description: "TDA-derived mutual information scores — final MI values after TDA curvature correction"
-        fields:
-          - name: src_id
-            expression:
-              dialects: [{dialect: ANSI_SQL, expression: src_id}]
-            description: "Source symbol ID"
-          - name: dst_id
-            expression:
-              dialects: [{dialect: ANSI_SQL, expression: dst_id}]
-            description: "Destination symbol ID"
-          - name: raw_mi
-            expression:
-              dialects: [{dialect: ANSI_SQL, expression: raw_mi}]
-            description: "Raw mutual information score"
-          - name: tda_corrected_mi
-            expression:
-              dialects: [{dialect: ANSI_SQL, expression: tda_corrected_mi}]
-            description: "TDA-corrected MI score after curvature adjustment"
+              dialects: [{dialect: ANSI_SQL, expression: content}]
+            description: "Pickle-serialized Python object (not human-readable)"
     relationships:
       - name: pipeline_phase_order
         description: "Sequential dependency order of pipeline output files"
         source_dataset: manifold_states
         target_dataset: anisotropic_fields
-        source_field: symbol_id
-        target_field: symbol_id
+        source_field: symbol
+        target_field: symbol
         relationship_type: one_to_one
     metrics:
-      - name: pipeline_phases
-        description: "Number of pipeline phases with serialized outputs"
-        formula: "8"
-      - name: total_fields
-        description: "Total number of serialized output records"
-        formula: "COUNT(*) FROM all_outputs"
+      - name: total_pipeline_artifacts
+        description: "Number of JSON/JSONL artifact files"
+        formula: "9 (7 JSON + 2 JSONL)"
+      - name: total_cache_files
+        description: "Number of pickle cache files"
+        formula: "3"
+      - name: total_rows_jsonl
+        description: "Total rows across all JSONL files"
+        formula: "6708 (3354 per file)"

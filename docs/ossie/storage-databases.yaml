@@ -3,136 +3,174 @@ semantic_model:
     description: "Persistent database backends — SQLite symbol/graph storage and DuckDB TDA warehouse"
     ai_context:
       instructions: >
-        Quro uses three SQLite databases and one DuckDB database for persistent storage.
-        SQLite handles fast indexed lookups for the symbol registry, CQE semantic graph,
-        and TDA analysis index. DuckDB serves as the analytics warehouse for TDA
-        computation and exploration queries. All databases live under the project's
-        .quro/ directory. See docs/centers/C0/docs/architecture.md for the data layer.
+        Quro uses three SQLite databases and one DuckDB database under .quro_context/.
+        registry.db (17.9MB) is the primary symbol registry with nodes, edges, aliases tables
+        and TDA-enriched columns. cqe_index.db and tda_index.db are empty (schema-only placeholders).
+        quro_tda.duckdb (3.2GB) is the analytics warehouse with 10 tables storing the full
+        TDA pipeline state: nodes, adjacency, manifold states, anisotropic fields, energy states,
+        events, semantic centers, and pipeline metadata.
     datasets:
       - name: registry_db
-        source: "file://registry.db (SQLite)"
-        primary_key: [symbol_id]
-        description: "Symbol registry — all code symbols with types, roles, intent tags, source locations, and TDA metadata"
+        source: "file://registry.db (SQLite, 17.9MB)"
+        primary_key: [id]
+        description: "SQLite symbol registry — master store for all indexed symbols, edges, and file aliases"
         fields:
-          - name: symbol_id
+          - name: id
             expression:
-              dialects: [{dialect: ANSI_SQL, expression: symbol_id}]
-            description: "Unique symbol identifier (e.g., sym::QuroV3Service::service::81)"
-          - name: name
+              dialects: [{dialect: ANSI_SQL, expression: id}]
+            description: "Unique identifier (e.g., sym::main or cat::entry_point)"
+          - name: type
             expression:
-              dialects: [{dialect: ANSI_SQL, expression: name}]
-            description: "Short symbol name"
-          - name: kind
+              dialects: [{dialect: ANSI_SQL, expression: type}]
+            description: "Node type: function, class, method, variable, module, category"
+          - name: tags
             expression:
-              dialects: [{dialect: ANSI_SQL, expression: kind}]
-            description: "Symbol kind: function, class, method, variable, module"
-          - name: file_path
+              dialects: [{dialect: ANSI_SQL, expression: tags}]
+            description: "JSON array of classification tags"
+          - name: metadata
             expression:
-              dialects: [{dialect: ANSI_SQL, expression: file_path}]
-            description: "Source file path (relative to project root)"
-          - name: line_number
+              dialects: [{dialect: ANSI_SQL, expression: metadata}]
+            description: "JSON metadata object (e.g., category_type)"
+          - name: energy_total
             expression:
-              dialects: [{dialect: ANSI_SQL, expression: line_number}]
-            description: "Line number in source file"
-          - name: role
+              dialects: [{dialect: ANSI_SQL, expression: energy_total}]
+            description: "Total TDA energy (potential + kinetic)"
+          - name: field_role
             expression:
-              dialects: [{dialect: ANSI_SQL, expression: role}]
-            description: "TDA role: TRANSIENT, CONVERTER, EMITTER, SINK, LEAF"
-          - name: intent
+              dialects: [{dialect: ANSI_SQL, expression: field_role}]
+            description: "Field role: not_critical_point, attractor, repeller, saddle"
+          - name: field_magnitude
             expression:
-              dialects: [{dialect: ANSI_SQL, expression: intent}]
-            description: "Semantic intent: util, core, init, error, test, entry"
-          - name: center_id
+              dialects: [{dialect: ANSI_SQL, expression: field_magnitude}]
+            description: "Field vector magnitude"
+          - name: mass
             expression:
-              dialects: [{dialect: ANSI_SQL, expression: center_id}]
-            description: "Semantic center assignment (C0–C9)"
-      - name: cqe_index_db
-        source: "file://cqe_index.db (SQLite)"
-        primary_key: [src_id, dst_id]
-        description: "CQE semantic graph index — weighted directed edges with mutual information (MI) scores"
+              dialects: [{dialect: ANSI_SQL, expression: mass}]
+            description: "Cognitive mass (TF-IDF derived)"
+          - name: friction
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: friction}]
+            description: "Traversal friction coefficient"
+      - name: registry_edges
+        source: "file://registry.db -> edges (SQLite)"
+        primary_key: [id]
+        description: "Directed edges between symbols (calls, imports, inheritance)"
         fields:
-          - name: src_id
+          - name: id
             expression:
-              dialects: [{dialect: ANSI_SQL, expression: src_id}]
+              dialects: [{dialect: ANSI_SQL, expression: id}]
+            description: "Auto-increment edge ID"
+          - name: src
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: src}]
             description: "Source symbol ID"
-          - name: dst_id
+          - name: dst
             expression:
-              dialects: [{dialect: ANSI_SQL, expression: dst_id}]
+              dialects: [{dialect: ANSI_SQL, expression: dst}]
             description: "Destination symbol ID"
-          - name: mi_score
-            expression:
-              dialects: [{dialect: ANSI_SQL, expression: mi_score}]
-            description: "Mutual information score for the edge"
           - name: weight
             expression:
               dialects: [{dialect: ANSI_SQL, expression: weight}]
-            description: "Combined edge weight (MI-adjusted)"
-          - name: edge_type
+            description: "Edge weight"
+          - name: kind
             expression:
-              dialects: [{dialect: ANSI_SQL, expression: edge_type}]
-            description: "Edge type: CALL, IMPORT, INHERIT, CATEGORY"
-      - name: tda_index_db
-        source: "file://tda_index.db (SQLite)"
-        primary_key: [symbol_id]
-        description: "TDA analysis index — energy fields, curvature, persistence data per symbol"
+              dialects: [{dialect: ANSI_SQL, expression: kind}]
+            description: "Edge kind: calls, category, semantic_similarity, dependency, composition"
+      - name: registry_aliases
+        source: "file://registry.db -> aliases (SQLite)"
+        primary_key: [symbol_id, path, line]
+        description: "Symbol-to-file aliases mapping each symbol to its source file occurrences"
         fields:
           - name: symbol_id
             expression:
               dialects: [{dialect: ANSI_SQL, expression: symbol_id}]
-            description: "Unique symbol identifier"
-          - name: forward_mag
+            description: "Symbol ID"
+          - name: path
             expression:
-              dialects: [{dialect: ANSI_SQL, expression: forward_mag}]
-            description: "Forward energy magnitude"
+              dialects: [{dialect: ANSI_SQL, expression: path}]
+            description: "Absolute source file path"
+          - name: line
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: line}]
+            description: "Line number in source file"
+          - name: kind
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: kind}]
+            description: "Symbol kind: function, class, method"
+          - name: signature
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: signature}]
+            description: "Full signature/definition string"
+      - name: cqe_index_db
+        source: "file://cqe_index.db (SQLite, empty)"
+        primary_key: [none]
+        description: "CQE semantic graph index — schema-only placeholder (0 bytes), no data populated"
+        fields:
+          - name: status
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: status}]
+            description: "Placeholder: database file exists but is empty"
+      - name: tda_index_db
+        source: "file://tda_index.db (SQLite, empty)"
+        primary_key: [none]
+        description: "TDA analysis index — schema-only placeholder (0 bytes), no data populated"
+        fields:
+          - name: status
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: status}]
+            description: "Placeholder: database file exists but is empty"
+      - name: quro_tda_warehouse
+        source: "file://quro_tda.duckdb (DuckDB, 3.2GB)"
+        primary_key: [symbol_id]
+        description: "TDA analytics warehouse — 10 tables with full pipeline state: nodes, adjacency, manifolds, fields, energy, events, centers"
+        fields:
+          - name: symbol_id
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: symbol_id}]
+            description: "Unique symbol identifier (tables: nodes, manifold_states, energy_states, anisotropic_fields)"
+          - name: energy_total
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: energy_total}]
+            description: "Total TDA energy (table: energy_states)"
+          - name: embedding
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: embedding}]
+            description: "5D manifold embedding vector (table: manifold_states)"
+          - name: forward_direction
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: forward_direction}]
+            description: "3D forward direction vector (table: anisotropic_fields)"
+          - name: forward_magnitude
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: forward_magnitude}]
+            description: "Forward field magnitude (table: anisotropic_fields)"
           - name: backward_tension
             expression:
               dialects: [{dialect: ANSI_SQL, expression: backward_tension}]
-            description: "Backward tension score"
-          - name: ricci_curvature
+            description: "Backward tension score (table: anisotropic_fields)"
+          - name: event_type
             expression:
-              dialects: [{dialect: ANSI_SQL, expression: ricci_curvature}]
-            description: "Forman-Ricci curvature value"
-          - name: tau_persistence
+              dialects: [{dialect: ANSI_SQL, expression: event_type}]
+            description: "CQE query event type (table: events, 13M rows)"
+          - name: center_id
             expression:
-              dialects: [{dialect: ANSI_SQL, expression: tau_persistence}]
-            description: "Persistence across tau thresholds"
-      - name: quro_tda_warehouse
-        source: "file://quro_tda.duckdb (DuckDB)"
-        primary_key: [symbol_id]
-        description: "TDA analytics warehouse — OLAP-optimized storage for large-scale TDA computation and exploration"
-        fields:
-          - name: symbol_id
-            expression:
-              dialects: [{dialect: ANSI_SQL, expression: symbol_id}]
-            description: "Unique symbol identifier"
-          - name: manifold_state
-            expression:
-              dialects: [{dialect: ANSI_SQL, expression: manifold_state}]
-            description: "Manifold state projection vector (JSON array)"
-          - name: anisotropic_field
-            expression:
-              dialects: [{dialect: ANSI_SQL, expression: anisotropic_field}]
-            description: "Directional field vector per symbol (JSON array)"
-          - name: field_direction
-            expression:
-              dialects: [{dialect: ANSI_SQL, expression: field_direction}]
-            description: "Field direction: attractor, repeller, saddle"
-          - name: cluster_id
-            expression:
-              dialects: [{dialect: ANSI_SQL, expression: cluster_id}]
-            description: "TDA cluster assignment"
+              dialects: [{dialect: ANSI_SQL, expression: center_id}]
+            description: "Semantic center ID (table: semantic_centers)"
     relationships:
-      - name: db_to_model
-        description: "Mapping from physical databases to logical semantic models"
-        source_dataset: registry_db
-        target_dataset: cqe_index_db
+      - name: db_origin
+        description: "Mapping from DuckDB warehouse tables to the file-based JSON outputs they aggregate"
+        source_dataset: quro_tda_warehouse
+        target_dataset: registry_db
         source_field: symbol_id
-        target_field: src_id
-        relationship_type: one_to_many
+        target_field: id
+        relationship_type: one_to_one
     metrics:
       - name: total_symbols
-        description: "Total number of symbols in the registry"
-        formula: "SELECT COUNT(*) FROM registry.symbols"
-      - name: avg_mi_score
-        description: "Average MI score across all CQE edges"
-        formula: "SELECT AVG(mi_score) FROM cqe.edges"
+        description: "Total nodes in registry.db"
+        formula: "SELECT COUNT(*) FROM registry.nodes"
+      - name: total_registry_edges
+        description: "Total edges in registry.db"
+        formula: "SELECT COUNT(*) FROM registry.edges"
+      - name: duckdb_total_rows
+        description: "Total rows across all DuckDB tables"
+        formula: "~13.4M (dominated by events: 13M)"
