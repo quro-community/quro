@@ -1,3 +1,10 @@
+---
+type: Guide
+title: TDA (Topological Data Analysis) System Guide
+description: Comprehensive guide to the TDA system architecture, phases, physics model, and data schema for semantic topology analysis.
+tags: [tda, topology, guide, system]
+---
+
 # TDA (Topological Data Analysis) System Guide
 
 > **Mental Model**: The codebase is terrain. CQE is a map index. TDA is the topography. Execution is the actual roads.

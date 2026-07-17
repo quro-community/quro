@@ -1,4 +1,5 @@
 ---
+type: CenterSkill
 name: quro-center-C1
 description: "Explore and maintain documentation for Quro semantic center C1 (Leaf-Dominated Fanout Utility Layer, fanout, 670 symbols). Loads parameters from metadata.json. SKILL.md is READ-ONLY — never self-patch."
 version: 1.0.0

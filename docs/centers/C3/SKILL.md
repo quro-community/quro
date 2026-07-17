@@ -1,4 +1,5 @@
 ---
+type: CenterSkill
 name: quro-center-C3
 description: "Explore and maintain documentation for Quro semantic center C3 (Semantic Analysis and CQE Refinement Hub, hub, 290 symbols). Loads parameters from metadata.json. SKILL.md is READ-ONLY — never self-patch."
 version: 1.0.0

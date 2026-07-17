@@ -1,3 +1,10 @@
+---
+type: CenterOverview
+title: C8: MinHash LSH (High Fan-in Sink)
+description: High fan-in sink center representing the terminal layer of the LSH indexing subsystem.
+tags: [center, C8, sink, lsh, indexing]
+---
+
 # C8: MinHash LSH (High Fan-in Sink)
 
 > Center C8 | Archetype: sink | 139 symbols

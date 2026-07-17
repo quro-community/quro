@@ -1,3 +1,10 @@
+---
+type: Guide
+title: CQE Graph 演化收敛性证明
+description: 证明 CQE Graph 在 Fix Plan + Invariants 约束下不会无限震荡，必收敛到稳定态。
+tags: [cqe, graph, convergence, proof, guide]
+---
+
 # CQE Graph 演化收敛性证明
 
 > **目标**：证明 CQE Graph 在 Fix Plan + Invariants 约束下不会无限震荡，必收敛到稳定态。

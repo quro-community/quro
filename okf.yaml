@@ -1,0 +1,6 @@
+bundle:
+  name: quro
+  version: 0.1.0
+  description: "Quro — semantic code analysis and topological navigation system"
+  entry: docs/index.md
+  okf_version: "0.1"

@@ -1,4 +1,5 @@
 ---
+type: CenterSkill
 name: quro-center-C8
 description: "Explore and maintain documentation for Quro semantic center C8 (MinHash LSH, Sink, 139 symbols). Loads parameters from metadata.json. SKILL.md is READ-ONLY — never self-patch."
 version: 1.0.0

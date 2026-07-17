@@ -1,4 +1,5 @@
 ---
+type: CenterSkill
 name: quro-center-C4
 description: "Explore and maintain documentation for Quro semantic center C4 (High fan-in sink: terminal layer, often I/O or persistence, 284 symbols). Loads parameters from metadata.json. SKILL.md is READ-ONLY — never self-patch."
 version: 1.0.0

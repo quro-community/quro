@@ -1,4 +1,5 @@
 ---
+type: CenterSkill
 name: quro-center-C7
 description: "Explore and maintain documentation for Quro semantic center C7 (Balanced Chain, Chain, 139 symbols). Loads parameters from metadata.json. SKILL.md is READ-ONLY — never self-patch."
 version: 1.0.0

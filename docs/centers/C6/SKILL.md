@@ -1,4 +1,5 @@
 ---
+type: CenterSkill
 name: quro-center-C6
 description: "Explore and maintain documentation for Quro semantic center C6 (Balanced chain: transitional layer, traverse sequentially following the call chain, 176 symbols). Loads parameters from metadata.json. SKILL.md is READ-ONLY — never self-patch."
 version: 1.0.0

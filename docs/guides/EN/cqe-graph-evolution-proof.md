@@ -1,3 +1,10 @@
+---
+type: Guide
+title: CQE Graph Evolution — Convergence Proof
+description: Proves that under Fix Plan + Invariants constraints, the CQE Graph converges to a stable state with no infinite repair loops.
+tags: [cqe, graph, convergence, proof, guide]
+---
+
 # CQE Graph Evolution — Convergence Proof
 
 > **Goal**: Prove that under Fix Plan + Invariants constraints, the CQE Graph does not oscillate indefinitely — it must converge to a stable state.

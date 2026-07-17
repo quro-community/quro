@@ -1,3 +1,10 @@
+---
+type: CenterOverview
+title: C2: Leaf-dominated Fanout — Utility Layer
+description: Leaf-dominated fanout center providing traversal mode selection, flow observer utilities, and dictionary conversion helpers.
+tags: [center, C2, fanout, traversal, utility]
+---
+
 # C2: Leaf-dominated Fanout — Utility Layer
 
 > Center C2 | Archetype: fanout | 624 symbols

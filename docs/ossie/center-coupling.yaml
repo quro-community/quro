@@ -1,0 +1,89 @@
+semantic_model:
+  - name: center_coupling
+    description: "Cross-center mutual information scores and cluster assignments"
+    ai_context:
+      instructions: >
+        Models the structural coupling between semantic centers (C0–C9).
+        Coupling scores are derived from TDA mutual information analysis of
+        shared bridge symbols. See docs/centers/index.md for the full center
+        registry and coupling summary.
+    datasets:
+      - name: coupling_scores
+        source: centers.coupling_scores
+        primary_key: [center_a, center_b]
+        description: "Pairwise coupling scores between semantic centers"
+        fields:
+          - name: center_a
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: center_a}]
+            description: "First center ID (e.g., C0)"
+          - name: center_b
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: center_b}]
+            description: "Second center ID (e.g., C1)"
+          - name: coupling_score
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: coupling_score}]
+            description: "Mutual information coupling score (higher = tighter coupling)"
+          - name: bridge_symbol_count
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: bridge_symbol_count}]
+            description: "Number of shared bridge symbols between the centers"
+          - name: shared_sinks
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: shared_sinks}]
+            description: "Number of shared sink symbols"
+      - name: clusters
+        source: centers.clusters
+        primary_key: [cluster_id]
+        description: "Structural coupling clusters (tight-coupling groups)"
+        fields:
+          - name: cluster_id
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: cluster_id}]
+            description: "Cluster identifier (e.g., SC70, SC38, SC1)"
+          - name: member_centers
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: member_centers}]
+            description: "Comma-separated list of member center IDs"
+          - name: total_symbols
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: total_symbols}]
+            description: "Total symbols across all member centers"
+          - name: intra_cluster_density
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: intra_cluster_density}]
+            description: "Internal coupling density of the cluster"
+      - name: centers
+        source: centers.metadata
+        primary_key: [center_id]
+        description: "Semantic center metadata"
+        fields:
+          - name: center_id
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: center_id}]
+            description: "Center ID (C0–C9)"
+          - name: archetype
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: archetype}]
+            description: "Center archetype: hub, fanout, sink, chain"
+          - name: symbol_count
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: symbol_count}]
+            description: "Number of symbols in the center"
+          - name: entry_strategy
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: entry_strategy}]
+            description: "Recommended exploration strategy: top-down, bottom-up, sequential, converge_inward, upstream-first, expand_outward"
+    relationships:
+      - name: cluster_membership
+        description: "Centers belonging to each cluster"
+        source_dataset: clusters
+        target_dataset: centers
+        source_field: cluster_id
+        target_field: cluster_id
+        relationship_type: one_to_many
+    metrics:
+      - name: avg_coupling
+        description: "Average pairwise coupling score across all centers"
+        formula: "AVG(coupling_score)"

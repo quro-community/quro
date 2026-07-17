@@ -1,3 +1,10 @@
+---
+type: CenterOverview
+title: C6: Balanced Chain — Transitional Layer
+description: Transitional chain layer bridging between core orchestration, storage layer, file I/O sinks, and quality reporting.
+tags: [center, C6, chain, transitional]
+---
+
 # C6: Balanced Chain — Transitional Layer
 
 > Center C6 | Archetype: chain | 176 symbols

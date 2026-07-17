@@ -1,0 +1,82 @@
+semantic_model:
+  - name: symbol_registry
+    description: "Symbol metadata — TDA roles, forward/backward magnitudes, file locations"
+    ai_context:
+      instructions: >
+        Central registry of all code symbols known to Quro. Each symbol carries
+        TDA classification (role, energy), source location (file, line), and
+        semantic metadata (intent, category). See docs/centers/index.md for
+        center-by-center symbol breakdown.
+    datasets:
+      - name: symbols
+        source: registry.symbols
+        primary_key: [symbol_id]
+        description: "Master symbol registry with TDA metadata"
+        fields:
+          - name: symbol_id
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: symbol_id}]
+            description: "Unique symbol ID (e.g., sym::QuroV3Service::service::81)"
+          - name: name
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: name}]
+            description: "Short symbol name"
+          - name: kind
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: kind}]
+            description: "Symbol kind: function, class, method, variable, module"
+          - name: file_path
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: file_path}]
+            description: "Source file path (relative to project root)"
+          - name: line_number
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: line_number}]
+            description: "Line number in source file"
+          - name: module_path
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: module_path}]
+            description: "Python module path (dot-separated)"
+          - name: docstring
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: docstring}]
+            description: "Symbol docstring (first 200 chars)"
+          - name: intent
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: intent}]
+            description: "Semantic intent: util, core, init, error, test, entry"
+          - name: role
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: role}]
+            description: "TDA role: TRANSIENT, CONVERTER, EMITTER, SINK, LEAF"
+          - name: forward_mag
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: forward_mag}]
+            description: "Forward energy magnitude"
+          - name: backward_tension
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: backward_tension}]
+            description: "Backward tension score"
+          - name: source_diversity
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: source_diversity}]
+            description: "Diversity of upstream callers (Shannon entropy normalized)"
+          - name: center_id
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: center_id}]
+            description: "Semantic center assignment (C0–C9)"
+    relationships:
+      - name: symbol_calls
+        description: "Calls from one symbol to another"
+        source_dataset: symbols
+        target_dataset: symbols
+        source_field: symbol_id
+        target_field: symbol_id
+        relationship_type: many_to_many
+    metrics:
+      - name: total_symbols
+        description: "Total number of registered symbols"
+        formula: "COUNT(*)"
+      - name: avg_forward_mag
+        description: "Average forward magnitude across all symbols"
+        formula: "AVG(forward_mag)"

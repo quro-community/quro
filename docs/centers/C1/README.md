@@ -1,3 +1,10 @@
+---
+type: CenterOverview
+title: C1: Leaf-Dominated Fanout Utility Layer
+description: Leaf-dominated fanout utility layer containing storage adaptation, graph persistence, and visualization utilities.
+tags: [center, C1, fanout, storage, utility]
+---
+
 # C1: Leaf-Dominated Fanout Utility Layer
 
 > Center C1 | Archetype: fanout | 670 symbols

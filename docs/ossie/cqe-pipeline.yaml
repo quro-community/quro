@@ -1,0 +1,88 @@
+semantic_model:
+  - name: cqe_pipeline
+    description: "CQE pipeline — gate evaluation, flow state, invariant structures"
+    ai_context:
+      instructions: >
+        Models the CQE (Cognitive Query Engine) pipeline state. Includes gate
+        evaluation results, traversal flow state, and structural invariant checks.
+        See docs/guides/tda-system-guide.md for pipeline details.
+    datasets:
+      - name: events
+        source: cqe.events
+        primary_key: [event_id]
+        description: "CQE pipeline execution events"
+        fields:
+          - name: event_id
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: event_id}]
+            description: "Unique event identifier"
+          - name: event_type
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: event_type}]
+            description: "Event type: NODE_VISIT, EDGE_TRAVERSE, PATH_COMPLETE, QUERY_METADATA"
+          - name: symbol_id
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: symbol_id}]
+            description: "Symbol involved in the event"
+          - name: depth
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: depth}]
+            description: "Traversal depth at event occurrence"
+          - name: timestamp
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: timestamp}]
+            description: "Event timestamp (epoch ms)"
+          - name: passed_gate
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: passed_gate}]
+            description: "Whether the traversal passed the MI gate"
+      - name: flow_states
+        source: cqe.flow_states
+        primary_key: [session_id, step]
+        description: "CQE traversal flow state at each step"
+        fields:
+          - name: session_id
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: session_id}]
+            description: "Traversal session identifier"
+          - name: step
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: step}]
+            description: "Step number in the traversal"
+          - name: current_symbol
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: current_symbol}]
+            description: "Current symbol at this step"
+          - name: cumulative_energy
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: cumulative_energy}]
+            description: "Cumulative transition energy consumed"
+          - name: intent_alignment
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: intent_alignment}]
+            description: "Alignment between current direction and intent vector"
+      - name: invariants
+        source: cqe.invariants
+        primary_key: [invariant_id]
+        description: "Structural invariant check results"
+        fields:
+          - name: invariant_id
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: invariant_id}]
+            description: "Invariant check identifier"
+          - name: invariant_type
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: invariant_type}]
+            description: "Type: out_degree_bound, alias_dag, path_decay"
+          - name: passed
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: passed}]
+            description: "Whether the invariant check passed"
+          - name: symbol_id
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: symbol_id}]
+            description: "Symbol that triggered the check"
+    metrics:
+      - name: gate_pass_rate
+        description: "Fraction of traversals that passed the MI gate"
+        formula: "COUNT(passed_gate = true) / COUNT(*)"

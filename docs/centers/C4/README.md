@@ -1,3 +1,10 @@
+---
+type: CenterOverview
+title: C4: I/O & Filesystem Sink
+description: High fan-in sink center providing fundamental filesystem operations, LDS tool initialization, and Unix socket connections.
+tags: [center, C4, sink, io, filesystem]
+---
+
 # C4: I/O & Filesystem Sink
 
 > Center C4 | Archetype: sink | 284 symbols

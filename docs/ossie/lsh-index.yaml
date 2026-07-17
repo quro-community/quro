@@ -1,0 +1,89 @@
+semantic_model:
+  - name: lsh_index
+    description: "LSH indexing — MinHash signatures, similarity scores, drift history"
+    ai_context:
+      instructions: >
+        Locality-sensitive hashing configuration for semantic search. Uses MinHash
+        with 128 bands for similarity computation. Supports drift detection between
+        fingerprint versions. See docs/centers/C0/docs/architecture.md for
+        LSHOrchestrator details.
+    datasets:
+      - name: fingerprints
+        source: lsh.fingerprints
+        primary_key: [symbol_id, version]
+        description: "MinHash LSH fingerprints per symbol version"
+        fields:
+          - name: symbol_id
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: symbol_id}]
+            description: "Symbol identifier"
+          - name: version
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: version}]
+            description: "Fingerprint version (incrementing integer)"
+          - name: signature
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: signature}]
+            description: "MinHash signature (128-integer array serialized as JSON)"
+          - name: bands
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: bands}]
+            description: "Number of bands used in LSH"
+          - name: rows_per_band
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: rows_per_band}]
+            description: "Rows per band"
+          - name: created_at
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: created_at}]
+            description: "Fingerprint creation timestamp"
+      - name: similarity_pairs
+        source: lsh.similarity_pairs
+        primary_key: [symbol_a, symbol_b]
+        description: "Precomputed similarity scores between symbol pairs"
+        fields:
+          - name: symbol_a
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: symbol_a}]
+            description: "First symbol ID"
+          - name: symbol_b
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: symbol_b}]
+            description: "Second symbol ID"
+          - name: similarity
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: similarity}]
+            description: "Jaccard similarity [0, 1]"
+          - name: computed_at
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: computed_at}]
+            description: "Similarity computation timestamp"
+      - name: drift_history
+        source: lsh.drift_history
+        primary_key: [symbol_id, from_version, to_version]
+        description: "LSH drift detection history"
+        fields:
+          - name: symbol_id
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: symbol_id}]
+            description: "Symbol identifier"
+          - name: from_version
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: from_version}]
+            description: "Previous fingerprint version"
+          - name: to_version
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: to_version}]
+            description: "Current fingerprint version"
+          - name: drift_score
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: drift_score}]
+            description: "Magnitude of semantic drift between versions"
+          - name: betti_numbers
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: betti_numbers}]
+            description: "Betti numbers from topological analysis (JSON array)"
+    metrics:
+      - name: avg_similarity
+        description: "Average pairwise symbol similarity"
+        formula: "AVG(similarity)"

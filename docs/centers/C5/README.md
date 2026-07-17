@@ -1,3 +1,10 @@
+---
+type: CenterOverview
+title: C5: High fan-out hub: orchestration layer
+description: High fan-out hub containing the policy layer, trust/weight mechanics, and morphism request type definitions.
+tags: [center, C5, hub, policy, orchestration]
+---
+
 # C5: High fan-out hub: orchestration layer
 
 > Center C5 | Archetype: hub | 187 symbols

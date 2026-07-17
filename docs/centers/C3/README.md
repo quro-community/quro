@@ -1,3 +1,10 @@
+---
+type: CenterOverview
+title: C3: Semantic Analysis and CQE Refinement Hub
+description: Hub center orchestrating TDA node role classification, CQE refinement, gate type validation, MCP tool dispatch, and workspace scanning.
+tags: [center, C3, hub, cqe, refinement]
+---
+
 # C3: Semantic Analysis and CQE Refinement Hub
 
 > Center C3 | Archetype: hub | 290 symbols

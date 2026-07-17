@@ -1,3 +1,10 @@
+---
+type: CenterOverview
+title: C0: Core Orchestration Layer
+description: Core orchestration hub of the Quro codebase, containing the primary service layer, orchestrator classes, and central coordination logic.
+tags: [center, C0, hub, orchestration]
+---
+
 # C0: Core Orchestration Layer
 
 > Center C0 | Archetype: hub | 919 symbols

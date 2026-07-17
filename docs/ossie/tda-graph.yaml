@@ -1,0 +1,91 @@
+semantic_model:
+  - name: tda_graph
+    description: "TDA semantic graph — nodes, edges, energy fields, morphisms"
+    ai_context:
+      instructions: >
+        Represents the semantic topology graph. Nodes are code symbols with TDA energy
+        and role metadata. Edges carry asymmetric weights, persistence scores, and
+        curvature values. See docs/centers/C0/docs/architecture.md for full context.
+        Forward_mag >= 10 identifies high-energy symbols (orchestrators, hubs).
+    datasets:
+      - name: nodes
+        source: tda.nodes
+        primary_key: [symbol_id]
+        description: "Semantic graph nodes with TDA energy and role metadata"
+        fields:
+          - name: symbol_id
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: symbol_id}]
+            description: "Unique symbol identifier (e.g., sym::CQEOrchestrator)"
+          - name: forward_mag
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: forward_mag}]
+            description: "Forward energy magnitude — higher = more downstream influence"
+          - name: backward_tension
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: backward_tension}]
+            description: "Backward tension — ability to navigate upstream"
+          - name: archetype
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: archetype}]
+            description: "Node archetype: hub, bridge, sink, leaf"
+          - name: energy
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: energy}]
+            description: "Total energy (potential + kinetic)"
+          - name: mass
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: mass}]
+            description: "Cognitive mass — TF-IDF derived importance"
+          - name: friction
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: friction}]
+            description: "Traversal friction — resistance to navigation"
+          - name: in_degree
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: in_degree}]
+            description: "Number of incoming edges"
+          - name: out_degree
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: out_degree}]
+            description: "Number of outgoing edges"
+          - name: role
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: role}]
+            description: "TDA role: TRANSIENT, CONVERTER, EMITTER, or SINK"
+      - name: edges_weighted
+        source: tda.edges_weighted
+        primary_key: [src_id, dst_id]
+        description: "Weighted semantic edges between nodes"
+        fields:
+          - name: src_id
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: src_id}]
+            description: "Source symbol ID"
+          - name: dst_id
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: dst_id}]
+            description: "Destination symbol ID"
+          - name: weight
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: weight}]
+            description: "Edge weight — strength of semantic connection"
+          - name: edge_type
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: edge_type}]
+            description: "Edge type: CALL, IMPORT, INHERIT, CATEGORY, LOCK, ASYNC_CALL, AWAIT"
+          - name: ricci_curvature
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: ricci_curvature}]
+            description: "Forman-Ricci curvature — negative = boundary"
+          - name: tau_persistence
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: tau_persistence}]
+            description: "Edge persistence across tau thresholds"
+    metrics:
+      - name: avg_energy
+        description: "Average node energy across the graph"
+        formula: "AVG(energy)"
+      - name: attractor_ratio
+        description: "Ratio of nodes classified as attractors"
+        formula: "COUNT(role = 'CONVERTER') / COUNT(*)"

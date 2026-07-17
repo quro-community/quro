@@ -1,4 +1,5 @@
 ---
+type: CenterSkill
 name: quro-center-C0
 description: "Explore and maintain documentation for Quro semantic center C0 (Core Orchestration Layer, Hub, 919 symbols). Loads parameters from metadata.json. SKILL.md is READ-ONLY — never self-patch."
 version: 1.0.0

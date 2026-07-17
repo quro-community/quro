@@ -1,3 +1,10 @@
+---
+type: CenterOverview
+title: C7: Balanced Chain — Transitional Layer
+description: Transitional chain layer containing shadow/draft tooling, graph neighbor traversal, and TypeScript analyzer lifecycle management.
+tags: [center, C7, chain, shadow, draft]
+---
+
 # C7: Balanced Chain — Transitional Layer
 
 > Center C7 | Archetype: chain | 139 symbols

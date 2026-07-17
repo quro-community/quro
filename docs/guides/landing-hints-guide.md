@@ -1,3 +1,10 @@
+---
+type: Guide
+title: Landing Hints - Quick Reference Guide
+description: How to use landing hints to quickly find relevant code using TDA trajectory navigation.
+tags: [tda, landing-hints, navigation, guide]
+---
+
 # Landing Hints - Quick Reference Guide
 
 **For**: Developers and AI agents using Quro TDA navigation  

@@ -1,4 +1,5 @@
 ---
+type: CenterSkill
 name: quro-center-C2
 description: "Explore and maintain documentation for Quro semantic center C2 (Leaf-dominated fanout: utility layer, 624 symbols). Loads parameters from metadata.json. SKILL.md is READ-ONLY — never self-patch."
 version: 1.0.0

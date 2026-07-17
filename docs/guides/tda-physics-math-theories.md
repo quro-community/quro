@@ -1,3 +1,10 @@
+---
+type: Guide
+title: Physics & Mathematics in TDA: Theory and Problem Mapping
+description: Maps the mathematical and physical theories used in the TDA system to specific code navigation problems.
+tags: [tda, physics, mathematics, theory, guide]
+---
+
 # Physics & Mathematics in TDA: Theory and Problem Mapping
 
 > This document maps the mathematical and physical theories used in the TDA system to the specific problems they solve in code navigation.
