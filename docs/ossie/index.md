@@ -11,6 +11,8 @@
 - [Symbol Registry](symbol-registry.yaml) — Symbol metadata, TDA roles, and forward/backward magnitudes
 - [LSH Index](lsh-index.yaml) — Locality-sensitive hashing configuration for semantic search
 - [Center Coupling](center-coupling.yaml) — Cross-center mutual information scores and cluster assignments
+- [Storage Databases](storage-databases.yaml) — Physical database backends: SQLite (registry.db, cqe_index.db, tda_index.db) and DuckDB (quro_tda.duckdb) with full table schemas
+- [Pipeline Outputs](pipeline-outputs.yaml) — Serialized TDA pipeline artifacts: 9 JSON/JSONL files (manifold, fields, energy, metrics, centers, hologram) and 3 pickle caches
 
 ## Conventions
 
