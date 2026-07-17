@@ -1,0 +1,210 @@
+semantic_model:
+  - name: pipeline_outputs
+    description: "Serialized TDA and CQE pipeline outputs — JSON and JSONL artifacts from each phase"
+    ai_context:
+      instructions: >
+        Quro's TDA and CQE pipelines produce intermediate and final outputs as JSON/JSONL
+        files. Each file corresponds to a pipeline phase and captures a specific view of
+        the semantic topology: manifold projections, field vectors, edge adjustments,
+        graph metrics, discovered centers, codebase holograms, reflection history, and
+        MI score snapshots. These files reside under the project's .quro/ directory.
+    datasets:
+      - name: manifold_states
+        source: "file://tda/phase2/manifold_states.jsonl (JSONL)"
+        primary_key: [symbol_id]
+        description: "Manifold state projections per symbol from TDA Phase 2"
+        fields:
+          - name: symbol_id
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: symbol_id}]
+            description: "Symbol identifier"
+          - name: manifold_coords
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: manifold_coords}]
+            description: "Manifold coordinate vector (JSON array of floats)"
+          - name: phase
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: phase}]
+            description: "Pipeline phase: phase2"
+          - name: timestamp
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: timestamp}]
+            description: "Computation timestamp (epoch ms)"
+      - name: anisotropic_fields
+        source: "file://tda/phase2_5/anisotropic_fields.jsonl (JSONL)"
+        primary_key: [symbol_id]
+        description: "Directional field vectors per symbol from TDA Phase 2.5"
+        fields:
+          - name: symbol_id
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: symbol_id}]
+            description: "Symbol identifier"
+          - name: field_vector
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: field_vector}]
+            description: "Anisotropic field vector (JSON array of floats)"
+          - name: field_strength
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: field_strength}]
+            description: "Magnitude of the field vector"
+          - name: classification
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: classification}]
+            description: "Field classification: attractor, repeller, saddle, drift"
+      - name: edge_weights
+        source: "file://tda/phase2_5/edge_weights.json (JSON)"
+        primary_key: [edge_id]
+        description: "TDA-adjusted edge weights from Phase 2.5"
+        fields:
+          - name: src_id
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: src_id}]
+            description: "Source symbol ID"
+          - name: dst_id
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: dst_id}]
+            description: "Destination symbol ID"
+          - name: original_weight
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: original_weight}]
+            description: "Original MI-based edge weight"
+          - name: tda_adjusted_weight
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: tda_adjusted_weight}]
+            description: "TDA-adjusted edge weight after curvature correction"
+          - name: curvature_correction
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: curvature_correction}]
+            description: "Correction factor applied"
+      - name: structural_metrics
+        source: "file://tda/phase2_5/structural_metrics.json (JSON)"
+        primary_key: [metric_name]
+        description: "Global structural graph metrics from TDA Phase 2.5"
+        fields:
+          - name: metric_name
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: metric_name}]
+            description: "Metric identifier: avg_energy, hub_ratio, coupling_density, etc."
+          - name: metric_value
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: metric_value}]
+            description: "Numeric value of the metric"
+          - name: description
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: description}]
+            description: "Human-readable description of the metric"
+      - name: semantic_centers
+        source: "file://tda/phase3_5/semantic_centers.json (JSON)"
+        primary_key: [center_id]
+        description: "Automatically discovered semantic centers from TDA Phase 3.5 partitioning"
+        fields:
+          - name: center_id
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: center_id}]
+            description: "Center identifier (C0–C9)"
+          - name: archetype
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: archetype}]
+            description: "Center archetype: hub, fanout, sink, chain"
+          - name: symbol_count
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: symbol_count}]
+            description: "Number of symbols in this center"
+          - name: member_symbols
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: member_symbols}]
+            description: "List of symbol IDs in this center (JSON array)"
+          - name: entry_points
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: entry_points}]
+            description: "Recommended entry point symbol IDs (JSON array)"
+      - name: codebase_hologram
+        source: "file://tda/phase3_5/codebase_hologram.json (JSON)"
+        primary_key: [model_id]
+        description: "Global codebase structure hologram — condensed topological signature of the entire codebase"
+        fields:
+          - name: model_id
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: model_id}]
+            description: "Hologram model identifier"
+          - name: betti_numbers
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: betti_numbers}]
+            description: "Persistent homology Betti numbers (JSON array)"
+          - name: cluster_tree
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: cluster_tree}]
+            description: "Hierarchical cluster tree (JSON)"
+          - name: global_energy
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: global_energy}]
+            description: "Total global energy of the codebase graph"
+          - name: central_hub_id
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: central_hub_id}]
+            description: "Identifier of the most central hub symbol"
+      - name: cqe_reflections
+        source: "file://cqe_reflections.jsonl (JSONL)"
+        primary_key: [reflection_id]
+        description: "CQE query reflection history — records of query behavior for MI score adjustment"
+        fields:
+          - name: reflection_id
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: reflection_id}]
+            description: "Reflection record identifier"
+          - name: query_symbol
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: query_symbol}]
+            description: "Symbol that was queried"
+          - name: intent
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: intent}]
+            description: "Query intent tag"
+          - name: path_taken
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: path_taken}]
+            description: "Sequence of symbols visited during the query (JSON array)"
+          - name: success
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: success}]
+            description: "Whether the query reached its goal"
+          - name: mi_adjustment
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: mi_adjustment}]
+            description: "MI score adjustment applied as a result of this reflection"
+      - name: tda_mi_scores
+        source: "file://tda_mi_scores.json (JSON)"
+        primary_key: [symbol_pair]
+        description: "TDA-derived mutual information scores — final MI values after TDA curvature correction"
+        fields:
+          - name: src_id
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: src_id}]
+            description: "Source symbol ID"
+          - name: dst_id
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: dst_id}]
+            description: "Destination symbol ID"
+          - name: raw_mi
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: raw_mi}]
+            description: "Raw mutual information score"
+          - name: tda_corrected_mi
+            expression:
+              dialects: [{dialect: ANSI_SQL, expression: tda_corrected_mi}]
+            description: "TDA-corrected MI score after curvature adjustment"
+    relationships:
+      - name: pipeline_phase_order
+        description: "Sequential dependency order of pipeline output files"
+        source_dataset: manifold_states
+        target_dataset: anisotropic_fields
+        source_field: symbol_id
+        target_field: symbol_id
+        relationship_type: one_to_one
+    metrics:
+      - name: pipeline_phases
+        description: "Number of pipeline phases with serialized outputs"
+        formula: "8"
+      - name: total_fields
+        description: "Total number of serialized output records"
+        formula: "COUNT(*) FROM all_outputs"
